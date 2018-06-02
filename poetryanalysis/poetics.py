@@ -54,24 +54,43 @@ def get_syllables(word):
         return [[]]
 
 
-def stress(word):
+def stress(word, variant = "primary"):
     """
     Represent strong and weak stress of a word with a series of 1's and 0's
+    variant: "primary" (first pronunciation listed)
     """
 
     syllables = get_syllables(word)
 
     if syllables:
         # TODO: Implement a more advanced way of handling multiple pronunciations than just picking the first
-        pronunciation_string = ''.join(syllables[0])
-        # Not interested in secondary stress
-        stress_numbers = ''.join([x.replace('2', '1')
-                                  for x in pronunciation_string if x.isdigit()])
+        if variant == "primary" or variant not in ["all", "min", "max"]:
+            return stress_from_syllables(syllables[0])
+        else:
+            all_pronunciations = [stress_from_syllables(x) for x in syllables]
+            all_pronunciations.sort()
+            all_pronunciations.sort(key=len)  # Sort by shortest pronunciation
+            if variant == "all":
+                return all_pronunciations
+            elif variant == "min":
+                return all_pronunciations[0]  # shorest pronunciation, latest stress
+            elif variant == "max":
+                return all_pronunciations[-1]  # most syllables, earliest stress
 
         return stress_numbers
 
     # Provisional logic for adding stress when the word is not in the dictionary is to stress first syllable only
     return '1' + '0' * (count_syllables(word) - 1)
+
+
+def stress_from_syllables(syllable_list):
+    pronunciation_string = str(''.join(syllable_list))
+
+    # Not interested in secondary stress
+    stress_numbers = ''.join([x.replace('2', '1'))
+                             for x in pronunciation_string if x.isdigit()])
+
+    return stress_numbers
 
 
 def scanscion(tokenized_poem):
