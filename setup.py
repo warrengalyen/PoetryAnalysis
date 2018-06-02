@@ -5,7 +5,7 @@ def readme():
         return f.read()
 
 setup(name='poetryanalysis',
-      version='0.2',
+      version='0.3',
       description='Analyze rhyme scheme, meter and form of poems',
       long_description=readme(),
       author='Warren Galyen',
