@@ -120,7 +120,7 @@ def get_nth_last_vowel(phones, n):
 
     vowel_count = 0
     for i in range(1, len(phones) + 1):
-        if any(ch.isdigit() for ch in phones[-i]):
+        if phones[-i][-1].isdigit():
             vowel_count += 1
             if vowel_count == n:
                 return -i
