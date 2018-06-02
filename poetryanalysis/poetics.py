@@ -93,6 +93,22 @@ def scanscion(tokenized_poem):
 def num_vowels(syllables):
     return len([syl for syl in syllables if any(char.isdigit() for char in syl)])
 
+def get_vowel_index(syllables, n):
+    """
+    Given the rhyme level  n and a syllable list, count back witin the list to find the nth vowel.
+    """
+
+    vowel_count = 0
+    nth_vowel_index = 0
+    for i in range(0, len(syllables), 1):
+        syl = syllables[-i]
+        if any(char.isdigit() for char in syl):
+            vowel_count += 1
+            if vowel_count == n:
+                nth_vowel_index = i
+                break
+    return nth_vowel_index
+
 
 def rhymes(word1, word2, level=2):
     """
@@ -112,14 +128,14 @@ def rhymes(word1, word2, level=2):
 
     for syllables in pronunciations:
         syllables = replace_syllables(syllables)
-        syls = level # Default number of syllables to check back from
         # If word only has a single vowel (i.e. 'stew'), then we reduce this to 1 otherwise we won't find a monosyllabic rhyme
-        if num_vowels(syllables) == 1:
-            syls = 1
+        if num_vowels(syllables) < level:
+            level = num_vowels(syllables)
+        vowel_idx = get_vowel_index(syllables, level)  # Default number of syllables to check back from
 
         for syllables2 in pronunciations2:
             syllables2 = replace_syllables(syllables2)
-            if syllables[-syls:] == syllables2[-syls:]:
+            if syllables[-vowel_idx:] == syllables2[-vowel_idx:]:
                 return True
 
     return False

@@ -40,6 +40,39 @@ class TestPoems(unittest.TestCase):
         self.assertTrue(poetryanalysis.guess_form(
             self.open_poem('rondeau.txt')) == 'rondeau')
 
+    def test_num_vowels(self):
+        self.assertEqual(poetrytools.num_vowels(
+            poetrytools.get_syllables('create')[0]),
+            2
+        )
+ 
+    def test_rhyme_level_1(self):
+        self.assertTrue(poetryanalysis.rhymes(
+            'berate', 'create', 1))
+ 
+    def test_rhyme_level_2(self):
+        self.assertTrue(poetryanalysis.rhymes(
+            'junction', 'function', 2))
+ 
+    def test_vowel_index(self):
+        self.assertEqual(poetryanalysis.get_vowel_index(
+            poetryanalysis.get_syllables('border')[0], 2),
+            4
+        )
+ 
+    def test_vowel_index(self):
+        self.assertEqual(poetryanalysis.get_vowel_index(
+            poetryanalysis.get_syllables('beautiful')[0], 3),
+            6
+        )
+ 
+    def test_bad_rhyme_1_syll(self):
+        self.assertFalse(poetryanalysis.rhymes(
+            'prep', 'stop'))
+ 
+    def test_bad_rhyme_2_syll(self):
+        self.assertFalse(poetryanalysis.rhymes(
+            'conduct', 'abstract'))
 
 if __name__ == '__main__':
     unittest.main()
