@@ -87,7 +87,7 @@ def stress_from_syllables(syllable_list):
     pronunciation_string = str(''.join(syllable_list))
 
     # Not interested in secondary stress
-    stress_numbers = ''.join([x.replace('2', '1'))
+    stress_numbers = ''.join([x.replace('2', '1')
                              for x in pronunciation_string if x.isdigit()])
 
     return stress_numbers
